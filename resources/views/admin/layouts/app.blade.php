@@ -11,6 +11,7 @@
 		<!-- Theme style -->
 		<link rel="stylesheet" href="{{ asset('admin-assets/css/adminlte.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('admin-assets/plugins/dropzone/min/dropzone.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('admin-assets/css/datetimepicker.css') }}">
 		
 		<link rel="stylesheet" href="{{ asset('admin-assets/plugins/summernote/summernote.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('admin-assets/css/custom.css') }}">
@@ -51,7 +52,7 @@
 								<i class="fas fa-user-cog mr-2"></i> Settings								
 							</a>
 							<div class="dropdown-divider"></div>
-							<a href="#" class="dropdown-item">
+							<a href="{{ route('admin.showpasswordform') }}" class="dropdown-item">
 								<i class="fas fa-lock mr-2"></i> Change Password
 							</a>
 							<div class="dropdown-divider"></div>
@@ -86,6 +87,7 @@
 		<script src="{{ asset('admin-assets/js/adminlte.min.js') }}"></script>
 		<script src="{{ asset('admin-assets/plugins/dropzone/min/dropzone.min.js') }}"></script>
 		<script src="{{ asset('admin-assets/plugins/summernote/summernote.min.js') }}"></script>
+		<script src="{{ asset('admin-assets/js/datetimepicker.js') }}"></script>
 		<!-- AdminLTE for demo purposes -->
 		<script src="{{ asset('admin-assets/js/demo.js') }}"></script>
 		<script type="text/javascript">

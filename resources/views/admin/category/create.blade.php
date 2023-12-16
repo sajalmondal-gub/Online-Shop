@@ -123,7 +123,7 @@
                 console.log("something went wrong");
             }
 
-        })
+        });
     });
 
     $("#name").change(function(){
@@ -161,10 +161,11 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, success: function(file, response){
+                
                 $("#image_id").val(response.image_id);
-                //console.log(response)
+               // console.log(response)
             }
         });
 
 </script>
-@endsection
+@endsection 

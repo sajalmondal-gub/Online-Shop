@@ -40,7 +40,7 @@ class CategoryController extends Controller
             $category->slug=$request->slug;
             $category->status=$request->status;
             $category->showhome=$request->showhome;
-           $category->save();
+            $category->save();
 
            //save image
            if (!empty($request->image_id)) {
@@ -94,7 +94,7 @@ class CategoryController extends Controller
         if($validatior->passes()){
             
             $category->name=$request->name;
-            $category->slug=$request->slug;
+            $category->slug=$request->slug; 
             $category->status=$request->status;
             $category->showhome=$request->showhome;
             $category->save();
@@ -109,18 +109,11 @@ class CategoryController extends Controller
               $sPath =public_path().'/temp/'.$tempImage->name;
               $dPath =public_path().'/uploads/category/'.$newImageName;
               File::copy($sPath,$dPath);
-             
-
-
               $category->image=$newImageName;
               $category->save();
               File::delete(public_path().'/uploads/category/'.$oldImage);
-   
-
-
-
            }
-
+ 
 
            $request->session()->flash('success', 'Category updated successfully');
 

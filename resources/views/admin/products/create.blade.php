@@ -1,15 +1,14 @@
 @extends('admin.layouts.app')
 @section('content')
-
-				<!-- Content Header (Page header) -->
-				<section class="content-header">					
+<!-- Content Header (Page header) -->
+<section class="content-header">					
 					<div class="container-fluid my-2">
 						<div class="row mb-2">
 							<div class="col-sm-6">
 								<h1>Create Product</h1>
 							</div>
 							<div class="col-sm-6 text-right">
-								<a href="products.html" class="btn btn-primary">Back</a>
+								<a href="{{ route('products.index') }}" class="btn btn-primary">Back</a>
 							</div>
 						</div>
 					</div>
@@ -44,7 +43,19 @@
                                                         <label for="description">Description</label>
                                                         <textarea name="description" id="description" cols="30" rows="10" class="summernote" placeholder="Description"></textarea>
                                                     </div>
-                                                </div>                                            
+                                                </div> 
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label for="short_description">Short Description</label>
+                                                        <textarea name="short_description" id="short_description" cols="30" rows="10" class="summernote" placeholder=" Short Description"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label for="description">Shipping and Returns</label>
+                                                        <textarea name="shipping_returns" id="shipping_returns" cols="30" rows="10" class="summernote" placeholder="Shipping returns"></textarea>
+                                                    </div>
+                                                </div>                                             
                                             </div>
                                         </div>	                                                                      
                                     </div>
@@ -57,6 +68,9 @@
                                                 </div>
                                             </div>
                                         </div>	                                                                      
+                                    </div>
+                                    <div class="row" id="product-gallery">
+
                                     </div>
                                     <div class="card mb-3">
                                         <div class="card-body">
@@ -182,15 +196,14 @@
                             </div>
                             
                             <div class="pb-5 pt-3">
-                                <button type="submit" class="btn btn-primary">Create</button>
-                                <a href="products.html" class="btn btn-outline-dark ml-3">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Add</button>
+                                <a href="{{ route('products.create') }}" class="btn btn-outline-dark ml-3">Cancel</a>
                             </div>
                         </div>
                     </form>
 					<!-- /.card -->
 				</section>
 				<!-- /.content -->
-
 @endsection
 
 @section('customJs')
@@ -226,16 +239,15 @@
                 success: function(response){
                     $("button[type='submit']").prop('disabled',false);
                     if (response['status']==true) {
-                        
+                        $(".error").removeClass('invalid-feedback').html('');
+                     $("input[type='text'],select,input[type='number']").removeClass('is-invalid');
+                     window.location.href="{{ route('products.index') }}";
+                     
                     } else{
                         var errors= response['errors'];
-                       //     if (errors['title']) {
-                       //     $("#title").addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors['title']);
-                      //  }else{
-                       //     $("#title").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html("");
-                     //   }
+                       
                      $(".error").removeClass('invalid-feedback').html('');
-                     $("input[type='text'],select,input[type='number']").removeClass('is-invalid')
+                     $("input[type='text'],select,input[type='number']").removeClass('is-invalid');
                      $.each(errors,function(key,value){
                         $(`#${key}`).addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(value);
 
@@ -277,13 +289,7 @@
 
         Dropzone.autoDiscover = false;    
             const dropzone = $("#image").dropzone({ 
-            init: function() {
-                this.on('addedfile', function(file) {
-                    if (this.files.length > 10) {
-                        this.removeFile(this.files[0]);
-                    }
-                });
-            },
+            
             url:  "{{ route('temp-images.create') }}",
             maxFiles: 10,
             paramName: 'image',
@@ -291,11 +297,28 @@
             acceptedFiles: "image/jpeg,image/png,image/gif",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }, success: function(file, response){
-                $("#image_id").val(response.image_id);
-                //console.log(response)
+            }, 
+            success: function(file, response){
+             
+              var html = `<div class="col-md-3" id="image-row-${response.image_id}"><div class="card">
+              <input type="hidden" name="image_array[]" value="${response.image_id}">
+                    <img src="${response.ImagePath}" class="card-img-top" alt="">
+                    <div class="card-body">
+                         <a href="javascript:void(0)" onclick="deleteImage(${response.image_id})" class="btn btn-danger">Delete</a>
+                    </div>
+                 </div></div>`
+                 $("#product-gallery").append(html);
+            },
+            complete:function(file){
+                this.removeFile(file);
+
             }
         });
+
+        function deleteImage(id){
+            $("#image-row-"+id).remove();
+
+        }
 
 
 

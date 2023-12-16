@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
-use Image;
+use App\Http\Controllers\Controller;
+
+
 
 class TempImagesController extends Controller
 {
@@ -14,17 +15,15 @@ class TempImagesController extends Controller
         if (!empty($image)) {
             $ext =$image->getClientOriginalExtension();
             $newName=time().'.'.$ext;
-            $tempImage =new TempImage();
+            $tempImage = new TempImage();
             $tempImage->name=$newName;
             $tempImage->save();
             $image->move(public_path().'/temp',$newName);
-            // Generate thumbnail
-           
-
             return response()->json([
                 'status'=>true,
-                'image_id'=>$tempImage->id,
-                'message'=>'image upload successfully'
+                'image_id'=>$tempImage->id,  
+                'ImagePath'=>asset('/temp/'.$newName),              
+                'message'=>'image upload successfully' 
             ]);
         }
 
